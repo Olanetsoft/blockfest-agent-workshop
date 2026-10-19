@@ -1,35 +1,41 @@
 # Build Your First AI Agent
 
-**From prompt to autonomous action.** Workshop code from Blockfest Africa 2026.
+**From prompt to autonomous action.** This is the code for the Blockfest Africa 2026 workshop.
 
 > An agent is a model in a loop, with tools, on a leash.
 
-**At the workshop? Open [WORKSHOP.md](WORKSHOP.md)** and follow along step by step.
+**If you are at the workshop, open [WORKSHOP.md](WORKSHOP.md) and follow along step by step.**
 
-## What's in here
+## What is in this repository
 
-**Festival Buddy** is a small agent that reads a festival schedule, checks the weather, saves a plan, and asks your permission before sending it to a friend. It's written in plain Node.js with **zero dependencies**, so there's nothing to install.
+This repository contains **Festival Buddy**, a small agent that reads a festival schedule, checks the weather, saves a plan for your day, and asks for your permission before sending that plan to a friend. It is written in plain Node.js and has no dependencies, so there is nothing to install.
 
-| File | Step |
+| File | What it contains |
 | --- | --- |
-| `01-talk.mjs` | One call to a model |
-| `02-decide.mjs` | Structured output (JSON) |
-| `03-tool.mjs` | One tool call, run by your code |
-| `04-loop.mjs` | The agent loop |
-| `05-leash.mjs` | Step limit, allow-list, human approval, logging: the finished agent |
-| `model.mjs` | Talks to any OpenAI-compatible API (Gemini, Ollama, OpenRouter, OpenAI) |
-| `tools.mjs` | The four tools |
-| `be-the-agent.md` | A no-code exercise: play the agent loop by hand |
+| `01-talk.mjs` | Step 1: a single call to the model |
+| `02-decide.mjs` | Step 2: the model answers in JSON so our code can read its decision |
+| `03-tool.mjs` | Step 3: the model asks for a tool and our code runs it |
+| `04-loop.mjs` | Step 4: the agent loop |
+| `05-leash.mjs` | Step 5: the finished agent, with a step limit, a list of allowed tools, permission before sending, and a log |
+| `model.mjs` | Sends messages to any OpenAI-compatible model, such as Gemini, Ollama, OpenRouter or OpenAI |
+| `tools.mjs` | The four tools the agent can use |
+| `sessions.json` | Sample festival sessions |
+| `WORKSHOP.md` | The step-by-step guide |
 
-Each step also lives on its own branch (`step-0-start` to `step-5-leash`). `main` is the finished agent.
+Each step also has its own branch, from `step-0-start` to `step-5-leash`. The `main` branch holds the finished agent.
 
 ## Run the finished agent
+
+You need Node.js version 20.12 or newer.
 
 ```bash
 git clone https://github.com/Olanetsoft/blockfest-agent-workshop.git
 cd blockfest-agent-workshop
-cp .env.example .env    # then paste a free key from https://aistudio.google.com/apikey
-node 05-leash.mjs
+cp .env.example .env
 ```
 
-Requires Node.js 20.12 or newer.
+Open `.env`, paste in a free API key from [aistudio.google.com/apikey](https://aistudio.google.com/apikey), and then run:
+
+```bash
+node 05-leash.mjs
+```
