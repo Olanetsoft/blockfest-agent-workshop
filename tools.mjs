@@ -55,7 +55,8 @@ export const get_schedule = tool(
     const { sessions } = JSON.parse(await readFile(new URL("./sessions.json", import.meta.url), "utf8"));
     const t = topic.toLowerCase();
     if (t === "all") return sessions;
-    const matches = sessions.filter((s) => [s.title, s.track, ...s.tags].join(" ").toLowerCase().includes(t));
+    const words = (s) => [s.track, ...s.tags, ...s.title.split(/\W+/)].map((w) => w.toLowerCase());
+    const matches = sessions.filter((s) => words(s).includes(t));
     return matches.length ? matches : { note: `Nothing matched "${topic}". Here is everything.`, sessions };
   },
 );
