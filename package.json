@@ -1,0 +1,18 @@
+{
+  "name": "blockfest-agent-workshop",
+  "version": "1.0.0",
+  "description": "Build your first AI agent, from prompt to autonomous action. No dependencies, plain Node.js.",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20.12"
+  },
+  "scripts": {
+    "step1": "node 01-talk.mjs",
+    "step2": "node 02-decide.mjs",
+    "step3": "node 03-tool.mjs",
+    "step4": "node 04-loop.mjs",
+    "step5": "node 05-leash.mjs",
+    "agent": "node 05-leash.mjs"
+  }
+}

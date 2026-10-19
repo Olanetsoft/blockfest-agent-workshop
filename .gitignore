@@ -1,0 +1,6 @@
+.env
+node_modules/
+outbox/
+my-plan.md
+agent-log.jsonl
+.DS_Store

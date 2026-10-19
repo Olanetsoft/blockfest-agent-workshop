@@ -1,0 +1,15 @@
+{
+  "note": "SAMPLE DATA for the workshop. These are invented sessions, not the real Blockfest Africa agenda.",
+  "sessions": [
+    { "time": "10:00", "stage": "Main Stage", "title": "Opening: Bringing Africa Onchain", "speaker": "Festival host", "track": "Keynote", "tags": ["web3", "ecosystem"] },
+    { "time": "10:45", "stage": "Builders Hall", "title": "Build Your First AI Agent", "speaker": "Workshop lead", "track": "Workshop", "tags": ["AI", "agents", "hands-on"] },
+    { "time": "11:30", "stage": "Main Stage", "title": "Stablecoins and Everyday Payments", "speaker": "A fintech founder", "track": "Fintech", "tags": ["payments", "stablecoins"] },
+    { "time": "12:15", "stage": "Stage B", "title": "AI Agents That Hold Wallets: Promise and Risk", "speaker": "A security researcher", "track": "AI", "tags": ["AI", "agents", "security", "web3"] },
+    { "time": "13:00", "stage": "Food Court", "title": "Lunch and Networking", "speaker": "", "track": "Break", "tags": ["networking"] },
+    { "time": "14:00", "stage": "Builders Hall", "title": "Prompt Engineering for Developers", "speaker": "An AI engineer", "track": "AI", "tags": ["AI", "prompts", "developers"] },
+    { "time": "14:45", "stage": "Main Stage", "title": "Regulation Roundtable", "speaker": "Policy panel", "track": "Policy", "tags": ["regulation", "policy"] },
+    { "time": "15:30", "stage": "Stage B", "title": "Shipping AI Products on a Startup Budget", "speaker": "A startup CTO", "track": "AI", "tags": ["AI", "startups", "cost"] },
+    { "time": "16:15", "stage": "Builders Hall", "title": "Smart Contract Security 101", "speaker": "An auditor", "track": "Developers", "tags": ["security", "smart contracts"] },
+    { "time": "17:00", "stage": "Main Stage", "title": "Closing Party and Awards", "speaker": "Festival host", "track": "Social", "tags": ["music", "networking"] }
+  ]
+}

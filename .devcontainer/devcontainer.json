@@ -1,0 +1,10 @@
+{
+  "name": "Build Your First AI Agent",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:22",
+  "postCreateCommand": "cp -n .env.example .env || true",
+  "customizations": {
+    "codespaces": {
+      "openFiles": ["WORKSHOP.md", ".env"]
+    }
+  }
+}
