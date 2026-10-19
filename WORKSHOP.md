@@ -400,6 +400,7 @@ Then make it yours:
 | --- | --- |
 | `No API key yet` | You haven't created `.env`, or the key is still `paste-your-key-here` |
 | `Model call failed (404)` | The model name isn't available to you. Pick a free one in AI Studio and update `MODEL` in `.env` |
+| `Model call failed (402)` and "prepayment credits are depleted" | Your key's Google project has billing linked with no credits, so it gets no free tier. In AI Studio, create a new key **in a new project** and paste it into `.env` |
 | `Model call failed (429)` | Free-tier rate limit. Wait 30 seconds and try again |
 | `fetch failed` | No internet. Try a hotspot, or switch to Ollama in `.env` |
 | `process.loadEnvFile is not a function` | Your Node is too old. Install Node 20.12+ or use Codespaces |
