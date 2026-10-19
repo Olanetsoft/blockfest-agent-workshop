@@ -1,7 +1,4 @@
-// Step 2: It can decide.
-// Adds:        ask for JSON, so code can read the model's decision.
-// Look for:    the model picked an action, but nothing ran it yet.
-// Checkpoint:  who would actually fetch the weather?
+// Step 2: It can decide. The model answers in JSON, so our code can read its decision.
 
 import { model } from "./model.mjs";
 

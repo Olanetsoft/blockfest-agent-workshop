@@ -1,7 +1,4 @@
-// Step 1: It can talk.
-// Adds:        one call to the model. Ask, get text back.
-// Look for:    the answer is just text. Nothing happened in the world.
-// Checkpoint:  can it tell you today's weather in Lagos?
+// Step 1: It can talk. We send one message and print the answer.
 
 import { model } from "./model.mjs";
 
