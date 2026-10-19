@@ -1,6 +1,11 @@
+# Your private settings
 .env
-node_modules/
-outbox/
+
+# Files the agent creates when it runs
 my-plan.md
+outbox/
 agent-log.jsonl
+
+# System files
 .DS_Store
+Thumbs.db
