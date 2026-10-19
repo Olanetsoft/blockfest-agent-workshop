@@ -1,36 +1,38 @@
 # Build Your First AI Agent
 
-**From prompt to autonomous action.** A follow-along guide for the Blockfest Africa 2026 workshop.
+**From prompt to autonomous action.** This is the follow-along guide for the Blockfest Africa 2026 workshop.
 
 > An agent is a model in a loop, with tools, on a leash.
 
-You'll build **Festival Buddy**: an agent that reads the festival schedule, checks the Lagos weather, saves a plan, and asks your permission before sending it to a friend. Five small steps, each one a single file.
+In this workshop you will build **Festival Buddy**, an agent that reads the festival schedule, checks the weather in Lagos, saves a plan for your day, and asks for your permission before it sends that plan to a friend. You will build it in five small steps, and each step is a single file.
 
-| Step | File | What it adds | Branch to jump in |
+| Step | File | What the step adds | Branch with the finished step |
 | --- | --- | --- | --- |
-| 0 | | Setup | `step-0-start` |
-| 1 | `01-talk.mjs` | It can talk | `step-1-talk` |
-| 2 | `02-decide.mjs` | It can decide | `step-2-decide` |
-| 3 | `03-tool.mjs` | It can use a tool | `step-3-tool` |
-| 4 | `04-loop.mjs` | It can keep going | `step-4-loop` |
-| 5 | `05-leash.mjs` | It can act safely on its own | `step-5-leash` |
+| 0 | | Setting up your computer | `step-0-start` |
+| 1 | `01-talk.mjs` | The agent can talk | `step-1-talk` |
+| 2 | `02-decide.mjs` | The agent can decide | `step-2-decide` |
+| 3 | `03-tool.mjs` | The agent can use a tool | `step-3-tool` |
+| 4 | `04-loop.mjs` | The agent can keep going | `step-4-loop` |
+| 5 | `05-leash.mjs` | The agent can act safely on its own | `step-5-leash` |
 
-**Lost or behind? You never have to catch up by typing.** Each branch is the finished state of that step:
+**If you fall behind, you do not need to type everything to catch up.** Every branch holds the finished version of that step. Put your own changes aside and switch to the branch for the step we are on. For example, to catch up to step 3:
 
 ```bash
-git stash            # put your changes aside
+git stash
 git checkout step-3-tool
 ```
 
-**No laptop?** You're on the Watchers track. Read along here, answer the checkpoint questions, and play [Be the agent](be-the-agent.md) in step 3.
+**If you do not have a laptop with you,** you can still follow every step. Read along on your phone, think about each checkpoint question, and play the game in the section called [Be the agent](#be-the-agent) at the end of this guide.
 
 ---
 
-## Step 0: Setup (5 minutes, start now)
+## Step 0: Set up your computer
 
-You need **Node.js 20.12 or newer** (`node -v` to check) and a **free Gemini API key**. No `npm install`: this project has zero dependencies.
+Please start this while the talk is going on, because it takes about five minutes.
 
-**1. Get the code**
+You need **Node.js version 20.12 or newer** and a **free Gemini API key**. You can check your Node.js version by running `node -v`. You do not need to install any packages, because this project has no dependencies.
+
+**1. Download the code.**
 
 ```bash
 git clone https://github.com/Olanetsoft/blockfest-agent-workshop.git
@@ -38,42 +40,44 @@ cd blockfest-agent-workshop
 git checkout step-0-start
 ```
 
-No git? Use **Code → Download ZIP** on the GitHub page.
-No Node? Use **Code → Codespaces → Create codespace** on the GitHub page. It runs in your browser with everything installed.
+If you do not have Git, open the repository on GitHub, click the green **Code** button, and choose **Download ZIP**.
 
-**2. Get a free API key**
+If you do not have Node.js, open the repository on GitHub, click the green **Code** button, and choose **Codespaces**, then **Create codespace**. This gives you a ready-made setup in your browser.
 
-Go to [aistudio.google.com/apikey](https://aistudio.google.com/apikey), sign in with a Google account, and create a key. No card needed.
+**2. Get a free API key.**
 
-**3. Add your key**
+Go to [aistudio.google.com/apikey](https://aistudio.google.com/apikey), sign in with a Google account, and create a key. You do not need a payment card. Create the key in a **new project**, because a project that already has billing set up will not get the free tier.
+
+**3. Add your key to the project.**
+
+Make a copy of the example settings file:
 
 ```bash
-cp .env.example .env        # Windows: copy .env.example .env
+cp .env.example .env
 ```
 
-Open `.env` and paste your key after `API_KEY=`. Keep this file private. It is already in `.gitignore`.
+On Windows, use `copy .env.example .env` instead.
 
-**What's already here**
+Open `.env` in your editor and paste your key after `API_KEY=`. Keep this file private. Git already ignores it, so it will never be uploaded.
 
-| File | What it is |
+**What is already in the project**
+
+| File | What it does |
 | --- | --- |
-| `model.mjs` | Talks to the AI. One function: `model.chat(messages, { tools })`. You won't change it. |
-| `tools.mjs` | Four tools the agent can use: `get_schedule`, `get_weather`, `save_plan`, `send_message` |
-| `sessions.json` | Sample festival sessions (invented, not the real agenda) |
+| `model.mjs` | Sends messages to the AI model and returns its reply. You will not need to change it. |
+| `tools.mjs` | The four tools the agent can use: `get_schedule`, `get_weather`, `save_plan` and `send_message`. |
+| `sessions.json` | A list of sample festival sessions. These are made up, and they are not the real Blockfest agenda. |
 
 ---
 
 ## Step 1: It can talk
 
-One call to the model. Ask a question, get text back. This is every chatbot you've used.
+We start with a single call to the model. You ask a question and you get text back. This is how every chatbot you have used works.
 
-Create `01-talk.mjs`:
+Create a file called `01-talk.mjs` and paste in this code:
 
 ```js
-// Step 1: It can talk.
-// Adds:        one call to the model. Ask, get text back.
-// Look for:    the answer is just text. Nothing happened in the world.
-// Checkpoint:  can it tell you today's weather in Lagos?
+// Step 1: It can talk. We send one message and print the answer.
 
 import { model } from "./model.mjs";
 
@@ -90,13 +94,13 @@ Run it:
 node 01-talk.mjs
 ```
 
-You should see a friendly self-introduction.
+You should see the model introduce itself.
 
-**Checkpoint:** can it tell you today's weather in Lagos?
+**Checkpoint question: can it tell you today's weather in Lagos?**
 
-<details><summary>Answer</summary>
+<details><summary>Show the answer</summary>
 
-No. It only knows what it learned in training. It can't look anything up, and nothing it says changes anything in the world.
+No, it cannot. The model only knows what it learned during training. It cannot look anything up, and nothing it says changes anything in the world.
 
 </details>
 
@@ -104,15 +108,12 @@ No. It only knows what it learned in training. It can't look anything up, and no
 
 ## Step 2: It can decide
 
-Ask for JSON instead of prose. Now your code can *read* the model's decision.
+Now we ask the model to answer in JSON instead of normal sentences. Because JSON has a fixed shape, our code can read the model's decision and act on it.
 
-Create `02-decide.mjs`:
+Create a file called `02-decide.mjs` and paste in this code:
 
 ```js
-// Step 2: It can decide.
-// Adds:        ask for JSON, so code can read the model's decision.
-// Look for:    the model picked an action, but nothing ran it yet.
-// Checkpoint:  who would actually fetch the weather?
+// Step 2: It can decide. The model answers in JSON, so our code can read its decision.
 
 import { model } from "./model.mjs";
 
@@ -127,17 +128,19 @@ if (action.tool === "get_weather") {
 }
 ```
 
+Run it:
+
 ```bash
 node 02-decide.mjs
 ```
 
 You should see `Model wants: { city: 'Lagos' }`.
 
-**Checkpoint:** the model decided to get the weather. Who will actually fetch it?
+**Checkpoint question: the model has decided to get the weather, so who is actually going to fetch it?**
 
-<details><summary>Answer</summary>
+<details><summary>Show the answer</summary>
 
-Nobody yet. The model can only *say* what it wants. Running it is your code's job, and that's step 3.
+Nobody yet. The model can only say what it wants. Running the action is the job of our code, and that is what we add in step 3.
 
 </details>
 
@@ -145,17 +148,14 @@ Nobody yet. The model can only *say* what it wants. Running it is your code's jo
 
 ## Step 3: It can use a tool
 
-Open `tools.mjs` and look at `get_weather`. A tool is just a normal function with a **description** (what it's for) and **parameters** (what it needs). The model only sees those labels.
+Before you write any code, open `tools.mjs` and look at `get_weather`. A tool is an ordinary function with two things attached to it: a **description** that says what the tool is for, and **parameters** that say what information it needs. The model only ever sees the description and the parameters. It never sees or runs the function itself.
 
-The flow: the model asks for a tool, **your code runs it**, and the result goes back to the model.
+This step works in three parts. The model asks for a tool, our code runs that tool, and then we send the result back to the model so it can answer.
 
-Create `03-tool.mjs`:
+Create a file called `03-tool.mjs` and paste in this code:
 
 ```js
-// Step 3: It can use a tool.
-// Adds:        a real tool. The model asks, OUR code runs it, the result goes back.
-// Look for:    the model never touches the internet. Your code does.
-// Checkpoint:  who actually ran get_weather, the model or your code?
+// Step 3: It can use a tool. The model asks for a tool, our code runs it, and the result goes back.
 
 import { model } from "./model.mjs";
 import { get_weather } from "./tools.mjs";
@@ -163,19 +163,16 @@ import { get_weather } from "./tools.mjs";
 const tools = { get_weather };
 const messages = [{ role: "user", content: "Do I need an umbrella in Lagos today?" }];
 
-// 1. The model decides it needs a tool.
 const reply = await model.chat(messages, { tools });
 if (!reply.toolCall) {
-  console.log("The model answered without a tool:", reply.text);
+  console.log("The model answered without using a tool:", reply.text);
   process.exit(0);
 }
 console.log("Model asked for:", reply.toolCall.name, reply.toolCall.args);
 
-// 2. Our code runs it.
 const result = await tools[reply.toolCall.name](reply.toolCall.args);
-console.log("Our code got:   ", result);
+console.log("Our code got:", result);
 
-// 3. Hand the result back and ask again.
 messages.push(reply.message);
 messages.push({ role: "tool", content: result });
 
@@ -183,19 +180,19 @@ const final = await model.chat(messages, { tools });
 console.log("\nFinal answer:", final.text);
 ```
 
+Run it:
+
 ```bash
 node 03-tool.mjs
 ```
 
-You should see the model ask for `get_weather`, your code fetch real weather, then a final answer about umbrellas.
+You should see the model ask for `get_weather`, then our code fetch the real weather in Lagos, and then a final answer about whether you need an umbrella.
 
-**Watchers:** now play [Be the agent](be-the-agent.md). You'll be the code.
+**Checkpoint question: who actually ran `get_weather`, the model or our code?**
 
-**Checkpoint:** who actually ran `get_weather`, the model or your code?
+<details><summary>Show the answer</summary>
 
-<details><summary>Answer</summary>
-
-Your code. Always. The model never touches the internet, your files, or your money. It only asks. That's why you get to decide what it may do.
+Our code ran it, and that is always the case. The model never touches the internet, your files or your money. It can only ask. That is why we get to decide what it is allowed to do.
 
 </details>
 
@@ -203,39 +200,40 @@ Your code. Always. The model never touches the internet, your files, or your mon
 
 ## Step 4: It can keep going
 
-Wrap step 3 in a loop: call the model, run whatever tool it asks for, feed the result back, repeat until it stops asking. **This loop is the agent.**
+Now we put step 3 inside a loop. We call the model, run whichever tool it asks for, send the result back, and repeat until the model stops asking for tools. **This loop is the agent.**
 
-Create `04-loop.mjs`:
+Create a file called `04-loop.mjs` and paste in this code:
 
 ```js
-// Step 4: It can keep going.
-// Adds:        a loop. Call the model, run its tool, feed the result back, repeat.
-// Look for:    the model chooses the next step every time. This loop IS the agent.
-// Checkpoint:  what decides when the loop stops?
-//
-// Run with your own goal:  node 04-loop.mjs "plan my afternoon"
+// Step 4: It can keep going. The model picks a tool, we run it, and we repeat until it is done.
+// Try your own goal: node 04-loop.mjs "plan my afternoon"
 
 import { model } from "./model.mjs";
 import { get_schedule, get_weather, save_plan, send_message } from "./tools.mjs";
 
 const tools = { get_schedule, get_weather, save_plan, send_message };
 
-const SYSTEM = `You are Festival Buddy, an assistant for someone at Blockfest Africa in Lagos today.
-Use your tools to get real information. Never invent sessions or weather.
+const instructions = `You are Festival Buddy, an assistant for someone at Blockfest Africa in Lagos today.
+Use your tools to get real information. Never make up sessions or weather.
 When the job is done, reply with a short summary.`;
 
 const goal = process.argv.slice(2).join(" ")
   || "I'm at Blockfest today. Pick the 3 sessions most relevant to AI builders, tell me if I need an umbrella in Lagos this evening, save my plan, and send it to my friend.";
 
-async function agent(goal) {
-  const messages = [{ role: "system", content: SYSTEM }, { role: "user", content: goal }];
+async function runAgent(goal) {
+  const messages = [
+    { role: "system", content: instructions },
+    { role: "user", content: goal },
+  ];
 
-  while (true) { // no limit, on purpose. Step 5 fixes this.
+  // There is no limit on purpose. Step 5 adds one.
+  while (true) {
     const reply = await model.chat(messages, { tools });
     if (!reply.toolCall) return reply.text;
 
     const { name, args } = reply.toolCall;
     console.log(`\nTOOL    ${name} ${JSON.stringify(args)}`);
+
     const result = await tools[name](args);
     console.log(`RESULT  ${JSON.stringify(result).slice(0, 160)}`);
 
@@ -245,26 +243,30 @@ async function agent(goal) {
 }
 
 console.log(`GOAL    ${goal}`);
-console.log(`\nDONE\n${await agent(goal)}`);
+console.log(`\nDONE\n${await runAgent(goal)}`);
 ```
+
+Run it:
 
 ```bash
 node 04-loop.mjs
 ```
 
-Watch it think: schedule, then weather, then save, then send. Nobody told it that order. Try your own goal:
+Watch the order it works in. It checks the schedule, then the weather, then saves the plan, and then sends it. Nobody told it to work in that order. It decided by itself.
+
+You can also give it your own goal:
 
 ```bash
 node 04-loop.mjs "Find me a security talk and tell me if it will rain at that time"
 ```
 
-Check `my-plan.md` and the `outbox/` folder: your agent took real actions.
+Afterwards, open `my-plan.md` and look inside the `outbox` folder. Your agent has taken real actions.
 
-**Checkpoint:** what decides when the loop stops?
+**Checkpoint question: what decides when the loop stops?**
 
-<details><summary>Answer</summary>
+<details><summary>Show the answer</summary>
 
-The model does, when it stops asking for tools. Nothing in your code stops it. If it gets confused, it could loop forever and burn your quota. Step 5 fixes that.
+The model decides, by no longer asking for tools. Nothing in our code stops it. If the model gets confused, it could keep going forever and use up your free quota. Step 5 fixes that.
 
 </details>
 
@@ -272,23 +274,18 @@ The model does, when it stops asking for tools. Nothing in your code stops it. I
 
 ## Step 5: It can act safely on its own
 
-Same loop, now on a leash:
+This is the same loop, but now it is on a leash. We add four rules:
 
-1. **Step limit:** never more than 8 turns.
-2. **Allow-list:** only tools you approved.
-3. **Ask first:** a human says yes before anything that sends, pays or deletes.
-4. **Log everything:** every step goes into `agent-log.jsonl`.
+1. **A step limit.** The agent can take at most eight steps.
+2. **A list of allowed tools.** The agent can only use the tools we have approved.
+3. **Permission before acting.** A person has to say yes before anything that sends, pays or deletes.
+4. **A log of everything.** Every step is written to a file called `agent-log.jsonl`.
 
-Create `05-leash.mjs`:
+Create a file called `05-leash.mjs` and paste in this code:
 
 ```js
-// Step 5: It can act safely on its own.
-// Adds:        the leash. A step limit, an allow-list, a human "yes" before
-//              anything with consequences, and a log of every step.
-// Look for:    the agent still decides, but YOU decide what it is allowed to do.
-// Checkpoint:  which tool should never run without asking you first?
-//
-// Run with your own goal:  node 05-leash.mjs "plan my afternoon"
+// Step 5: It can act safely on its own. The same loop, with four rules we control.
+// Try your own goal: node 05-leash.mjs "plan my afternoon"
 
 import { createInterface } from "node:readline/promises";
 import { appendFile } from "node:fs/promises";
@@ -298,19 +295,19 @@ import { get_schedule, get_weather, save_plan, send_message } from "./tools.mjs"
 const tools = { get_schedule, get_weather, save_plan, send_message };
 
 // The leash
-const MAX_STEPS = 8;                                  // 1. never loop forever
-const ALLOWED = new Set(Object.keys(tools));          // 2. only these tools
-const NEEDS_APPROVAL = new Set(["send_message"]);     // 3. ask a human first
-const LOG_FILE = "agent-log.jsonl";                   // 4. keep a record
+const MAX_STEPS = 8;
+const ALLOWED_TOOLS = new Set(Object.keys(tools));
+const NEEDS_APPROVAL = new Set(["send_message"]);
+const LOG_FILE = "agent-log.jsonl";
 
-const SYSTEM = `You are Festival Buddy, an assistant for someone at Blockfest Africa in Lagos today.
-Use your tools to get real information. Never invent sessions or weather.
+const instructions = `You are Festival Buddy, an assistant for someone at Blockfest Africa in Lagos today.
+Use your tools to get real information. Never make up sessions or weather.
 Save the plan before you send it. When the job is done, reply with a short summary.`;
 
 const goal = process.argv.slice(2).join(" ")
   || "I'm at Blockfest today. Pick the 3 sessions most relevant to AI builders, tell me if I need an umbrella in Lagos this evening, save my plan, and send it to my friend.";
 
-async function approve(name, args) {
+async function askPermission(name, args) {
   const terminal = createInterface({ input: process.stdin, output: process.stdout });
   const answer = await terminal.question(`\nAPPROVE? ${name} wants to run with:\n${JSON.stringify(args, null, 2)}\nAllow it? (y/n) `);
   terminal.close();
@@ -321,8 +318,25 @@ async function log(entry) {
   await appendFile(LOG_FILE, JSON.stringify({ time: new Date().toISOString(), ...entry }) + "\n");
 }
 
-async function agent(goal) {
-  const messages = [{ role: "system", content: SYSTEM }, { role: "user", content: goal }];
+async function runTool(name, args) {
+  if (!ALLOWED_TOOLS.has(name)) {
+    return { error: `The tool "${name}" is not allowed.` };
+  }
+  if (NEEDS_APPROVAL.has(name) && !(await askPermission(name, args))) {
+    return { error: "The person said no. Do not try again. Tell them what you would have sent." };
+  }
+  try {
+    return await tools[name](args);
+  } catch (error) {
+    return { error: error.message };
+  }
+}
+
+async function runAgent(goal) {
+  const messages = [
+    { role: "system", content: instructions },
+    { role: "user", content: goal },
+  ];
 
   for (let step = 1; step <= MAX_STEPS; step++) {
     const reply = await model.chat(messages, { tools });
@@ -334,15 +348,7 @@ async function agent(goal) {
     const { name, args } = reply.toolCall;
     console.log(`\nSTEP ${step}  ${name} ${JSON.stringify(args)}`);
 
-    let result;
-    if (!ALLOWED.has(name)) {
-      result = { error: `The tool "${name}" is not allowed.` };
-    } else if (NEEDS_APPROVAL.has(name) && !(await approve(name, args))) {
-      result = { error: "The human said no. Do not try again. Tell them what you would have sent." };
-    } else {
-      try { result = await tools[name](args); }
-      catch (err) { result = { error: err.message }; }
-    }
+    const result = await runTool(name, args);
     console.log(`RESULT  ${JSON.stringify(result).slice(0, 160)}`);
     await log({ step, tool: name, args, result });
 
@@ -354,58 +360,85 @@ async function agent(goal) {
 }
 
 console.log(`GOAL    ${goal}`);
-console.log(`\nDONE\n${await agent(goal)}`);
-console.log(`\nEvery step is logged in ${LOG_FILE}`);
+console.log(`\nDONE\n${await runAgent(goal)}`);
+console.log(`\nEvery step is saved in ${LOG_FILE}.`);
 ```
+
+Run it:
 
 ```bash
 node 05-leash.mjs
 ```
 
-When it wants to send, it stops and asks you. Try saying `n` and watch how it reacts. Then open `agent-log.jsonl` to see every decision it made.
+When the agent wants to send the message, it stops and asks you first. Try answering `n` and watch how it reacts. Then open `agent-log.jsonl` to see every decision it made.
 
-**Checkpoint:** which tool should never run without asking you first?
+**Checkpoint question: which tools should never run without asking you first?**
 
-<details><summary>Answer</summary>
+<details><summary>Show the answer</summary>
 
-Anything with consequences you can't undo: sending a message, paying, deleting, or (at a web3 festival) signing a transaction.
+Any tool whose result you cannot undo. That includes sending a message, making a payment, deleting something, and, at a web3 festival, signing a transaction.
 
 </details>
 
 ---
 
-## You built an agent
+## You have built an agent
 
-Give it your own goals:
+Try giving it your own goals:
 
 ```bash
 node 05-leash.mjs "Plan my afternoon around the AI talks and lunch"
 ```
 
-Then make it yours:
+Here are some ways to make it your own:
 
-- **Add a tool.** Copy `get_weather` in `tools.mjs`, give it a new name, description and function. Add it to `tools` in `05-leash.mjs`. The model will start using it.
-- **Swap the model.** Change `MODEL` or `BASE_URL` in `.env`. Same code works with Ollama (offline), OpenRouter or OpenAI.
-- **Make it onchain.** Replace `send_message` with a tool that reads a wallet balance. Keep the leash: a tool that can move money is the one that most needs a human "yes".
+- **Add a tool.** Copy `get_weather` in `tools.mjs`, give the copy a new name, description and function, and then add it to the `tools` list in `05-leash.mjs`. The model will start using it on its own.
+- **Change the model.** Change `MODEL` or `BASE_URL` in your `.env` file. The same code works with Ollama on your own laptop, with no internet, and with OpenRouter or OpenAI.
+- **Take it onchain.** Replace `send_message` with a tool that reads a wallet balance. Keep the leash in place, because a tool that can move money is the one that most needs a person to say yes.
 
 ## Where to go next
 
-- **Frameworks** such as the Vercel AI SDK, OpenAI Agents SDK, Google ADK and LangGraph package this same loop and leash for you. Now you know what they're doing underneath.
-- **MCP (Model Context Protocol)** is a standard way to plug tools into any agent. Write a tool once, use it everywhere.
-- Read *Building effective agents* by Anthropic for when to use an agent and when a simple workflow is better.
+- **Agent frameworks** such as the Vercel AI SDK, the OpenAI Agents SDK, Google's Agent Development Kit and LangGraph give you this same loop and leash ready-made. Now you know what they are doing underneath.
+- **The Model Context Protocol (MCP)** is a standard way to plug tools into any agent. You write a tool once and many different agents can use it.
+- **"Building effective agents"** is an essay by Anthropic that explains when you need an agent and when a simple fixed workflow is the better choice.
 
-## Troubleshooting
+## Be the agent
 
-| You see | Do this |
+This game needs no laptop and takes about three minutes. You play the part of the code, so you will see the agent loop from the inside.
+
+**1. Paste this into any AI chat app,** such as Claude, ChatGPT or Gemini, in a new chat:
+
+```
+You are an agent at Blockfest Africa in Lagos. You cannot look anything up yourself.
+You have two tools:
+  get_weather(city)   returns the weather for a city
+  get_schedule(topic) returns festival sessions about a topic
+
+Rules:
+- Never answer the user directly until you have the facts.
+- When you need a tool, reply with ONLY one line: CALL tool_name(argument)
+- I will run the tool and reply with: RESULT ...
+- When you have everything you need, start your reply with: FINAL
+
+My goal: Should I bring an umbrella this evening, and which AI session should I attend?
+```
+
+**2. Play the code.** When the AI replies with `CALL get_weather(Lagos)`, look up the weather on your phone and reply with something like `RESULT 28°C, 70% chance of rain tonight`. When it asks for the schedule, give it a session from the festival agenda. Keep going until it replies with `FINAL`.
+
+**3. Notice what just happened.** The AI decided which tool it needed, but it never touched the internet. You ran the tool and handed back the result, which is exactly what `03-tool.mjs` does. The AI kept asking until it had enough information, and that repetition is the loop in `04-loop.mjs`.
+
+## If something goes wrong
+
+| What you see | What to do |
 | --- | --- |
-| `No API key yet` | You haven't created `.env`, or the key is still `paste-your-key-here` |
-| `Model call failed (404)` | The model name isn't available to you. Pick a free one in AI Studio and update `MODEL` in `.env` |
-| `Model call failed (402)` and "prepayment credits are depleted" | Your key's Google project has billing linked with no credits, so it gets no free tier. In AI Studio, create a new key **in a new project** and paste it into `.env` |
-| `Model call failed (429)` | Free-tier rate limit. Wait 30 seconds and try again |
-| `fetch failed` | No internet. Try a hotspot, or switch to Ollama in `.env` |
-| `process.loadEnvFile is not a function` | Your Node is too old. Install Node 20.12+ or use Codespaces |
-| `Unexpected token` in step 2 | The model didn't reply with clean JSON. Run it again; it's a good example of why real tools (step 3) beat hand-parsed JSON |
+| `No API key found` | You have not created your `.env` file yet, or you have not replaced `paste-your-key-here` with your key. |
+| `Model call failed (402)` with the words "prepayment credits are depleted" | Your key belongs to a Google project with billing set up but no credit, so it does not get the free tier. Create a new key in a new project in AI Studio, and paste it into `.env`. |
+| `Model call failed (404)` | The model name is not available to you. Pick a free model in AI Studio and change `MODEL` in your `.env` file. |
+| `Model call failed (429)` | You have reached the free-tier limit for now. Wait about 30 seconds and try again. |
+| `fetch failed` | You are not connected to the internet. Try a phone hotspot, or switch to Ollama in your `.env` file. |
+| `process.loadEnvFile is not a function` | Your version of Node.js is too old. Install version 20.12 or newer, or use Codespaces. |
+| `Unexpected token` in step 2 | The model did not reply with clean JSON. Run it again. This is a good example of why real tools, which we add in step 3, are more reliable than reading JSON by hand. |
 
 ---
 
-Built for the Blockfest Africa 2026 workshop by [Idris Olubisi](https://github.com/Olanetsoft). Free-tier prompts may be used by the model provider to improve its models, so don't paste anything private.
+This workshop was built for Blockfest Africa 2026 by [Idris Olubisi](https://github.com/Olanetsoft). On the free tier, the model provider may use your messages to improve its models, so please do not paste anything private.
