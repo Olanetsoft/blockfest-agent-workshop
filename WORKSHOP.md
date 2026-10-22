@@ -398,9 +398,58 @@ Here are some ways to make it your own:
 
 ## Where to go next
 
-- **Agent frameworks** such as the Vercel AI SDK, the OpenAI Agents SDK, Google's Agent Development Kit and LangGraph give you this same loop and leash ready-made. Now you know what they are doing underneath.
+- **Agent frameworks** such as the Vercel AI SDK, the OpenAI Agents SDK, Google's Agent Development Kit and LangGraph give you this same loop and leash ready-made. Now you know what they are doing underneath. There is an example in the next section.
 - **The Model Context Protocol (MCP)** is a standard way to plug tools into any agent. You write a tool once and many different agents can use it.
 - **"Building effective agents"** is an essay by Anthropic that explains when you need an agent and when a simple fixed workflow is the better choice.
+
+## The same agent, with a framework
+
+You built the loop and the leash by hand so you could see how they work. In a real project you would usually let a framework handle them. Here is the same idea written with the [Vercel AI SDK](https://ai-sdk.dev/) (version 7). You do not need to run this today. It is here so you can recognise each part.
+
+```js
+import { ToolLoopAgent, tool, isStepCount } from "ai";
+import { google } from "@ai-sdk/google";
+import { z } from "zod";
+
+const get_weather = tool({
+  description: "Get the current temperature and the chance of rain for a city.",
+  inputSchema: z.object({ city: z.string() }),
+  execute: async ({ city }) => {
+    // The same weather code as in tools.mjs goes here.
+  },
+});
+
+const send_message = tool({
+  description: "Send a text message to the user's friend.",
+  inputSchema: z.object({ text: z.string() }),
+  needsApproval: true,
+  execute: async ({ text }) => {
+    // The same sending code as in tools.mjs goes here.
+  },
+});
+
+const agent = new ToolLoopAgent({
+  model: google("gemini-3.8-flash"),
+  instructions: "You are Festival Buddy, an assistant for someone at Blockfest Africa in Lagos today.",
+  tools: { get_weather, send_message },
+  stopWhen: isStepCount(8),
+});
+
+const result = await agent.generate({ prompt: "Do I need an umbrella in Lagos this evening?" });
+console.log(result.text);
+```
+
+How it matches what you built:
+
+| In the framework | In your code |
+| --- | --- |
+| `tool({ description, inputSchema, execute })` | A tool in `tools.mjs`: a description, its parameters, and the function |
+| `new ToolLoopAgent({ ... })` and `agent.generate(...)` | The `while` loop in `04-loop.mjs` |
+| `instructions` | The `instructions` text at the top of `04-loop.mjs` |
+| `stopWhen: isStepCount(8)` | `MAX_STEPS = 8` in `05-leash.mjs` |
+| `needsApproval: true` | `NEEDS_APPROVAL` and `askPermission` in `05-leash.mjs` |
+
+To try it yourself, run `npm install ai @ai-sdk/google zod` in a new folder and set `GOOGLE_GENERATIVE_AI_API_KEY` to your Gemini key.
 
 ## Be the agent
 
